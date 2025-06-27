@@ -1,7 +1,7 @@
 node_modules
 .env 
 .gitkeep
-config/development.json
+# config/development.json
 logs
 *.log
 npm-debug.log*

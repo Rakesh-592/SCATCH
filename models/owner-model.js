@@ -14,7 +14,11 @@ const ownerSchema = mongoose.Schema({
   },
 
   gstin: String,
-  picture: String, //for now String but we are goin to add it in db
+  picture: String,
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  }, //for now String but we are goin to add it in db
 });
 
 module.exports = mongoose.model("owner", ownerSchema);

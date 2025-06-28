@@ -1,24 +1,24 @@
+//
 const mongoose = require("mongoose");
 const dbgr = require("debug")("development:mongoose");
-const config = require("config");
-require("dotenv").config(); // Only needed locally
+require("dotenv").config(); // ensure .env is loaded in local dev
 
-let MONGO_URI;
+const MONGO_URI = process.env.MONGO_URI;
 
-try {
-  MONGO_URI = config.get("MONGO_URI");
-} catch (err) {
-  // If config not found (e.g., in Render), use env variable
-  MONGO_URI = process.env.MONGO_URI;
+if (!MONGO_URI) {
+  console.error("❌ MONGO_URI not set in environment variables");
+  process.exit(1);
 }
 
 mongoose
-  .connect(`${MONGO_URI}/scatch`)
-  .then(function () {
-    dbgr("connected");
+  .connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   })
-  .catch(function (err) {
-    dbgr(err);
+  .then(() => dbgr("✅ MongoDB connected"))
+  .catch((err) => {
+    dbgr("❌ MongoDB error: " + err.message);
+    process.exit(1);
   });
 
 module.exports = mongoose.connection;
